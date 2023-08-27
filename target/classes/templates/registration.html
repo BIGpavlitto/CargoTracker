@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/registrationStyles.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+    <title>Registration</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card my-5">
+                <form class="card-body cardbody-color p-lg-5" id="myForm" action="/registration" method="POST">
+                    <h3 class="text-center text-dark mt-5">Register yourself to GXO Logistics!</h3>
+                    <hr>
+                    <h4 class="text-center text-dark mb-2">Create an account!</h4>
+                    <div class="text-center">
+                        <img src="../imgs/logoImage.jpg"
+                             class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                             width="200px" alt="profile">
+                    </div>
+<!--                    <div class="mb-3">-->
+<!--                        <input for="loginId" type="text" class="form-control" name="loginID" id="loginField"-->
+<!--                               placeholder="Login ID"-->
+<!--                               required th:value="${login}">-->
+<!--                        <span id="errorLoginId"-->
+<!--                              style="display: none; color: red;">LoginId must have six characters!</span>-->
+<!--                    </div>-->
+                    <div class="mb-3">
+                        <input for="name" type="text" class="form-control" name="name" id="nameField"
+                               placeholder="Enter your name...">
+                        <span id="errorName"
+                              style="display: none; color: red;">Name should contain at least 3 chars!</span>
+                    </div>
+                    <div class="mb-3">
+                        <input for="surname" type="text" class="form-control" name="surname" id="surnameField"
+                               placeholder="Enter your surname...">
+                        <span id="errorSurname"
+                              style="display: none; color: red;">Surname should contain at least 3 chars!</span>
+                    </div>
+                    <div class="mb-3">
+                        <input for="phoneNumber" type="number" class="form-control" name="phoneNumber" id="phoneField"
+                               placeholder="Enter your phone number...">
+                        <span id="errorPhoneNumber"
+                              style="display: none; color: red;">Phone number should be at least 7 symbols!</span>
+                    </div>
+                    <div class="mb-3">
+                        <input for="email" type="email" class="form-control" name="email" id="emailField"
+                               placeholder="Enter your email...">
+                        <span id="errorEmail"
+                              style="display: none; color: red;">Email should be at least 5 symbols or @ symbol is missing!</span>
+                    </div>
+                    <div class="btn-group dropend">
+                        <select class="btn btn-color mb-5 dropdown-toggle" name="role" id="option">
+                            <option value="">Choose a role</option>
+                            <option value="manager">Manager</option>
+                            <option value="driver">Driver</option>
+                        </select>
+                        <span id="errorOption" class="pt-2 pl-2"
+                              style="display: none; color: red;">Select option!</span>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-color px-5 mb-2 mt-2 w-100" id="registrationBtn" onclick="validateInput()">
+                            Register
+                        </button>
+                    </div>
+                    <div class="text-center">
+                        <a class="btn btn-color px-1 mb-3 w-100" href="/login" role="button">Back</a>
+                    </div>
+                    <div id="registration" style="display: none">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="loader"></div>
+                            <span>Registering user. Please wait!</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <p>Your loginId: <span id="loginValue" th:text="${loginId}"></span></p>
+        <p>Your password: <span id="passwordValue" th:text="${password}"></span></p>
+        <p>You can change your password  in your cabinet! Keep in mind your loginId!</p>
+        <div class="option">
+            <button type="button" class="btn btn-primary" id="modalYes">Ok</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function validateInput() {
+        const name = document.getElementById('nameField').value;
+        const errorName = document.getElementById('errorName');
+
+        const surname = document.getElementById('surnameField').value;
+        const errorSurname = document.getElementById('errorSurname');
+
+        const phone = document.getElementById('phoneField').value;
+        const errorPhone = document.getElementById('errorPhoneNumber');
+
+        const email = document.getElementById('emailField').value;
+        const errorEmail = document.getElementById('errorEmail');
+
+        const selectedOption = document.getElementById('option').value;
+        const errorOption = document.getElementById('errorOption');
+
+        if (name.length < 3 && surname.length < 3 && phone.length < 7 && selectedOption === "" && email.length < 5) {
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+            errorName.style.display = 'inline';
+            errorSurname.style.display = 'inline';
+            errorPhone.style.display = 'inline';
+            errorOption.style.display = 'inline';
+            errorEmail.style.display = 'inline';
+        } else if (name.length < 3) {
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+            errorName.style.display = 'inline';
+        } else if (surname.length < 3) {
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+            errorSurname.style.display = 'inline';
+        } else if (phone.length < 7) {
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+            errorPhone.style.display = 'inline';
+        } else if(!email.includes('@') || email.length < 5){
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+            errorEmail.style.display = 'inline';
+        } else if (selectedOption === "") {
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+            errorOption.style.display = 'inline';
+        } else {
+            modalOverlay.style.display = 'flex';
+        }
+    }
+
+    //modal window
+    const modalOverlay = document.getElementById('modalOverlay');
+    const yesButton = document.getElementById('modalYes');
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            modalOverlay.style.display = 'none';
+        }
+    });
+
+    yesButton.addEventListener('click', () => {
+        modalOverlay.style.display = 'none';
+        document.getElementById('registration').style.display = 'inline';
+        setTimeout(() =>{
+            document.getElementById('myForm').submit();
+        },4000);
+    });
+</script>
+</html>

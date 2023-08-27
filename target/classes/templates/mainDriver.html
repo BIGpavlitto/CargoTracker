@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/mainStyles.css}">
+</head>
+<body>
+<div class="container m-5 p-1 rounded mx-auto bg-light shadow">
+    <div>
+        <div class="nav mt-2">
+            <div class="nav-text">
+                <p class="text">Hello, <span th:text="${driver.name}"></span>. Happy driving!</p>
+                <p class="text">Logged time: <span th:text="${time}" id="timer"></span></p>
+            </div>
+            <div class="nav-button">
+                <a class="btn btn_color" th:href="@{/main/personalData/{id}(id=${driver.id})}" role="button">Personal data</a>
+                <a class="btn btn_color" href="/login" role="button">Log out</a>
+            </div>
+        </div>
+        <hr>
+    </div>
+    <p class="pt-2 pl-1 font-weight-bold">New requested tasks:</p>
+    <div class="tasks border border-primary rounded">
+        <div id="container-task" th:each="item: ${initialData}">
+            <p class="m-2" th:text="${item}"></p>
+            <button type="button" class="btn btn_color chooseButton m-1 openModal">Choose</button>
+        </div>
+    </div>
+    <div class="row m-1 p-3">
+        <div class="mx-auto row add-todo-wrapper align-items-center justify-content-center">
+            <div class="col-auto px-0 mx-0 mr-2">
+                <button id="showPopupButton" type="button" class="btn btn_color">Add new route...</button>
+            </div>
+        </div>
+    </div>
+    <div id="popup">
+        <form>
+            <div class="container1">
+                <div class="search-box">
+                    <div class="border border-danger rounded">
+                        <div class="row">
+                            <input type="text" id="searchLeft" placeholder="From..." oninput="searchAddressLeft()">
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <ul class="mb-0" id="resultLeft"></ul>
+                </div>
+                <div class="search-box">
+                    <div class="border border-danger rounded">
+                        <div class="row">
+                            <input type="text" id="searchRight" placeholder="To..." oninput="searchAddressRight()">
+                            <button><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <ul class="mb-0" id="resultRight"></ul>
+                </div>
+                <div class="row">
+                    <button id="moreInfo" type="button" class="moreInfo btn btn_color">More info</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <p>Are you sure to choose this task?</p>
+        <div class="option">
+            <button type="button" class="btn btn-primary" id="modalYes">Yes</button>
+            <button type="button" class="btn btn-primary" id="modalNo">No</button>
+        </div>
+    </div>
+</div>
+<script>
+
+    const timeDisplay = document.getElementById('timer');
+    function updateTime(){
+        $.get("/api/time", (time) => {
+            timeDisplay.textContent = time;
+        });
+    }
+
+    setInterval(updateTime, 1000);
+
+    function searchAddressLeft() {
+        let query = document.getElementById("searchLeft");
+        let result = document.getElementById("resultLeft");
+        let count = 5;
+
+        if(query.value.length){
+            fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${query.value.trim()}&type=city&format=json&apiKey=804b5bb8cc9345149c38b77b983d85be`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.results.length === 0){
+                        result.innerHTML = '';
+                        result.style.display = 'none';
+                    }else{
+                        result.innerHTML = '';
+                        result.style.display = 'block';
+                        data.results.forEach(feature => {
+                            if(count > 0){
+                                count--;
+                                let option = document.createElement('li');
+                                option.textContent = feature.formatted;
+                                option.addEventListener('click', () =>{
+                                    query.value = option.innerHTML;
+                                    result.innerHTML = "";
+                                    result.style.display = 'none';
+                                });
+                                result.appendChild(option);
+                            }
+                        });
+                    }
+                    console.log(data);
+                });
+        }else{
+            result.innerHTML = '';
+            result.style.display = 'none';
+        }
+    }
+
+    function searchAddressRight(){
+        let query = document.getElementById("searchRight");
+        let result = document.getElementById("resultRight");
+        let count = 5;
+
+        if(query.value.length){
+            fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${query.value.trim()}&type=city&format=json&apiKey=804b5bb8cc9345149c38b77b983d85be`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.results.length === 0){
+                        result.innerHTML = '';
+                        result.style.display = 'none';
+                    }else{
+                        result.innerHTML = '';
+                        result.style.display = 'block';
+                        data.results.forEach(feature => {
+                            if(count > 0){
+                                count--;
+                                let option = document.createElement('li');
+                                option.textContent = feature.formatted;
+                                option.addEventListener('click', () =>{
+                                    query.value = option.innerHTML;
+                                    result.innerHTML = "";
+                                    result.style.display = 'none';
+                                });
+                                result.appendChild(option);
+                            }
+                        });
+                    }
+                    console.log(data);
+                });
+
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest('#searchRight') && event.target !== input) {
+                    query.style.display = 'none';
+                }
+            });
+        }else{
+            result.innerHTML = '';
+            result.style.display = 'none';
+        }
+    }
+
+    //open new route
+    const showPopupButton = document.getElementById('showPopupButton');
+    const popup = document.getElementById('popup');
+
+    showPopupButton.addEventListener('click', () => {
+        if(popup.style.display === 'block'){
+            popup.style.display = 'none';
+        }else{
+            popup.style.display = 'block';
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        let result = document.getElementById("resultLeft");
+        if (!result.contains(event.target) && event.target.tagName !== 'INPUT') {
+            result.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        let result = document.getElementById("resultRight");
+        if (!result.contains(event.target) && event.target.tagName !== 'INPUT') {
+            result.style.display = 'none';
+        }
+    });
+
+    //modal window
+    const openModalBtns = document.querySelectorAll('.openModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const noOption = document.getElementById('modalNo');
+
+    openModalBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modalOverlay.style.display = 'flex';
+        });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            modalOverlay.style.display = 'none';
+        }
+    });
+
+    noOption.addEventListener('click', (event) => {
+        modalOverlay.style.display = 'none';
+    });
+</script>
+</body>
+</html>

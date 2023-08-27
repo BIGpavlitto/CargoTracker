@@ -1,0 +1,167 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    line-height: 1.6;
+    background-image: url('../imgs/backgroundImage2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#popup {
+    display: none;
+}
+
+.btn_color:hover {
+    background-color: #0e3615;
+    color: #fff;
+}
+
+.btn_color {
+    background-color: #170e36;
+    color: #fff;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.tasks {
+    height: 150px;
+    overflow: auto;
+}
+
+.search-box {
+    width: 400px;
+    background: #fff;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+input{
+    flex:1;
+    height: 30px;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #333;
+}
+
+button{
+    background: transparent;
+    border: 0;
+    outline: 0;
+}
+
+button .fa-search{
+    width:25px;
+    color: #555;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.container1{
+    display: flex;
+    justify-content: center;
+}
+
+.moreInfo{
+    width: 200px;
+}
+
+#resultLeft, #resultRight{
+    width: 400px;
+    position: fixed;
+    list-style-type: none;
+    padding: 10px;
+    display: none;
+    z-index: 9999;
+    background-color: #ffffff;
+}
+
+#resultLeft li, #resultRight li{
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#resultLeft li:hover, #resultRight li:hover{
+    background: #e9f3ff;
+}
+
+#container-task{
+    display: flex;
+    justify-content: space-between;
+}
+
+.chooseButton {
+    width: 110px;
+}
+
+#container-task:hover{
+    background: #e9f3ff;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styles for modal content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Close button style */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.nav-button{
+    display: flex;
+    justify-content: space-around;
+    width: 225px;
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-text{
+    width: 900px;
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+}
+
+.text{
+    margin: 0px;
+}
+
+
