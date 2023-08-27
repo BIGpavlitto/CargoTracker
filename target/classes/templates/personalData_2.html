@@ -55,7 +55,7 @@
                         <span id="errorEmail" style="display: none; color: red;">Email should be at least 5 symbols or @ symbol is missing!</span>
                     </div>
                     <div class="text-center">
-                        <button type="button" class="btn btn_color px-5 mb-2 mt-3 w-100" onclick="validateInput()">Save
+                        <button id="save"  disabled=true type="button" class="btn btn_color px-5 mb-2 mt-3 w-100" onclick="validateInput()">Save
                         </button>
                     </div>
                     <div class="text-center">
@@ -75,6 +75,23 @@
     </div>
 </div>
 <script>
+    checkUnchanged();
+
+    function checkUnchanged() {
+        let inputs = document.querySelectorAll('input');
+        let saveBtn = document.getElementById('save');
+
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].addEventListener('input', function() {
+                if (inputs[i].defaultValue !== inputs[i].value) {
+                    saveBtn.disabled = false;
+                    return;
+                }
+                saveBtn.disabled = true;
+            });
+        }
+    }
+
     function validateInput() {
         const password = document.getElementById('passwordField').value;
         const errorPassword = document.getElementById('errorPassword');
