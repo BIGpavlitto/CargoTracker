@@ -23,33 +23,25 @@
         </div>
         <hr>
     </div>
-    <div id="popup">
-        <form>
-            <div class="container1">
-                <div class="search-box">
-                    <div class="border border-danger rounded">
-                        <div class="row">
-                            <input type="text" id="searchLeft" placeholder="From..." oninput="searchAddressLeft()">
-                            <button><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                    <ul class="mb-0" id="resultLeft"></ul>
-                </div>
-                <div class="search-box">
-                    <div class="border border-danger rounded">
-                        <div class="row">
-                            <input type="text" id="searchRight" placeholder="To..." oninput="searchAddressRight()">
-                            <button><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                    <ul class="mb-0" id="resultRight"></ul>
-                </div>
-                <div class="row">
-                    <button id="moreInfo" type="button" class="moreInfo btn btn_color">More info</button>
-                </div>
-            </div>
-        </form>
-    </div>
+    <p class="text pb-1">Registered drivers:</p>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" class="col-3">FirstName</th>
+            <th scope="col" class="col-3">LastName</th>
+            <th scope="col" class="col-3">Phone number</th>
+            <th scope="col" class="col-3">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="driver : ${employer.drivers}">
+            <td th:text="${driver.name}"></td>
+            <td th:text="${driver.surname}"></td>
+            <td th:text="${driver.phoneNumber}"></td>
+            <td th:text="${driver.email}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal-content">
